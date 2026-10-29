@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2026 Pirainuthal S - License LGPL-3 -->
+<odoo>
+    <menuitem id="wa_menu_root" name="WhatsApp" sequence="60"
+              web_icon="wa_cloud_connector,static/description/icon.png"
+              groups="group_wa_user"/>
+
+    <menuitem id="wa_menu_messages" name="Messages" parent="wa_menu_root"
+              action="wa_message_action" sequence="10"/>
+
+    <menuitem id="wa_menu_templates" name="Templates" parent="wa_menu_root"
+              action="wa_template_action" sequence="20"/>
+
+    <menuitem id="wa_menu_config" name="Configuration" parent="wa_menu_root"
+              sequence="90" groups="group_wa_manager"/>
+
+    <menuitem id="wa_menu_accounts" name="Accounts" parent="wa_menu_config"
+              action="wa_account_action" sequence="10"/>
+</odoo>

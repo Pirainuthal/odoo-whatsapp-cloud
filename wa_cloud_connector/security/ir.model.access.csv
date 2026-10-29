@@ -1,0 +1,11 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_wa_account_user,wa.account user,model_wa_account,group_wa_user,1,0,0,0
+access_wa_account_manager,wa.account manager,model_wa_account,group_wa_manager,1,1,1,1
+access_wa_template_user,wa.template user,model_wa_template,group_wa_user,1,0,0,0
+access_wa_template_manager,wa.template manager,model_wa_template,group_wa_manager,1,1,1,1
+access_wa_template_variable_user,wa.template.variable user,model_wa_template_variable,group_wa_user,1,0,0,0
+access_wa_template_variable_manager,wa.template.variable manager,model_wa_template_variable,group_wa_manager,1,1,1,1
+access_wa_message_user,wa.message user,model_wa_message,group_wa_user,1,0,1,0
+access_wa_message_manager,wa.message manager,model_wa_message,group_wa_manager,1,1,1,1
+access_wa_composer_user,wa.composer user,model_wa_composer,group_wa_user,1,1,1,1
+access_wa_composer_variable_user,wa.composer.variable user,model_wa_composer_variable,group_wa_user,1,1,1,1

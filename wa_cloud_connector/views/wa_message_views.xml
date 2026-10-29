@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2026 Pirainuthal S - License LGPL-3 -->
+<odoo>
+    <record id="wa_message_view_list" model="ir.ui.view">
+        <field name="name">wa.message.list</field>
+        <field name="model">wa.message</field>
+        <field name="arch" type="xml">
+            <list create="false" edit="false">
+                <field name="create_date" string="Date"/>
+                <field name="direction" widget="badge"
+                       decoration-info="direction == 'outgoing'"
+                       decoration-primary="direction == 'incoming'"/>
+                <field name="phone"/>
+                <field name="partner_id"/>
+                <field name="message_type"/>
+                <field name="body"/>
+                <field name="record_name" string="Document" optional="show"/>
+                <field name="state" widget="badge"
+                       decoration-muted="state == 'queued'"
+                       decoration-info="state == 'sent'"
+                       decoration-success="state in ('delivered', 'read', 'received')"
+                       decoration-danger="state == 'failed'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="wa_message_view_form" model="ir.ui.view">
+        <field name="name">wa.message.form</field>
+        <field name="model">wa.message</field>
+        <field name="arch" type="xml">
+            <form create="false" edit="false">
+                <header>
+                    <button name="action_retry" type="object" string="Retry"
+                            class="btn-primary"
+                            invisible="direction != 'outgoing' or state != 'failed'"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="queued,sent,delivered,read"
+                           invisible="direction == 'incoming'"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_open_record" type="object" class="oe_stat_button"
+                                icon="fa-external-link" string="Document"
+                                invisible="not res_id and not partner_id"/>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="direction"/>
+                            <field name="phone"/>
+                            <field name="partner_id"/>
+                            <field name="account_id"/>
+                        </group>
+                        <group>
+                            <field name="message_type"/>
+                            <field name="template_id" invisible="not template_id"/>
+                            <field name="attachment_id" invisible="not attachment_id"/>
+                            <field name="record_name" string="Document"/>
+                            <field name="status_date"/>
+                            <field name="wamid"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="body"/>
+                        <field name="error_message" invisible="not error_message"
+                               class="text-danger"/>
+                    </group>
+                    <field name="res_model" invisible="1"/>
+                    <field name="res_id" invisible="1"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="wa_message_view_search" model="ir.ui.view">
+        <field name="name">wa.message.search</field>
+        <field name="model">wa.message</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="phone"/>
+                <field name="partner_id"/>
+                <field name="body"/>
+                <field name="wamid"/>
+                <filter name="outgoing" string="Outgoing" domain="[('direction', '=', 'outgoing')]"/>
+                <filter name="incoming" string="Incoming" domain="[('direction', '=', 'incoming')]"/>
+                <separator/>
+                <filter name="failed" string="Failed" domain="[('state', '=', 'failed')]"/>
+                <group>
+                    <filter name="group_state" string="Status" context="{'group_by': 'state'}"/>
+                    <filter name="group_partner" string="Contact" context="{'group_by': 'partner_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="wa_message_action" model="ir.actions.act_window">
+        <field name="name">WhatsApp Messages</field>
+        <field name="res_model">wa.message</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'create': False}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_empty_folder">No WhatsApp messages yet</p>
+            <p>Use <b>Send WhatsApp</b> on a quotation, invoice or contact.</p>
+        </field>
+    </record>
+</odoo>

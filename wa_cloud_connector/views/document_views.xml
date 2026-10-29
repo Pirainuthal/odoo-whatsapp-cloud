@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2026 Pirainuthal S - License LGPL-3 -->
+<odoo>
+    <!-- Sales order / quotation -->
+    <record id="sale_order_view_form_inherit_wa" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.wa_cloud_connector</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_wa_send" type="object" string="Send WhatsApp"
+                        icon="fa-whatsapp" groups="wa_cloud_connector.group_wa_user"
+                        invisible="state == 'cancel'"/>
+            </xpath>
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_wa_view_messages" type="object" class="oe_stat_button"
+                        icon="fa-whatsapp" groups="wa_cloud_connector.group_wa_user"
+                        invisible="not wa_message_count">
+                    <field name="wa_message_count" widget="statinfo" string="WhatsApp"/>
+                </button>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Invoices / credit notes -->
+    <record id="account_move_view_form_inherit_wa" model="ir.ui.view">
+        <field name="name">account.move.form.inherit.wa_cloud_connector</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_wa_send" type="object" string="Send WhatsApp"
+                        icon="fa-whatsapp" groups="wa_cloud_connector.group_wa_user"
+                        invisible="move_type not in ('out_invoice', 'out_refund', 'out_receipt') or state != 'posted'"/>
+            </xpath>
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_wa_view_messages" type="object" class="oe_stat_button"
+                        icon="fa-whatsapp" groups="wa_cloud_connector.group_wa_user"
+                        invisible="not wa_message_count">
+                    <field name="wa_message_count" widget="statinfo" string="WhatsApp"/>
+                </button>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Contacts -->
+    <record id="res_partner_view_form_inherit_wa" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit.wa_cloud_connector</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_wa_send" type="object" class="oe_stat_button"
+                        icon="fa-whatsapp" string="Send WhatsApp"
+                        groups="wa_cloud_connector.group_wa_user"
+                        invisible="not phone"/>
+                <button name="action_wa_view_messages" type="object" class="oe_stat_button"
+                        icon="fa-comments-o" groups="wa_cloud_connector.group_wa_user"
+                        invisible="not wa_message_count">
+                    <field name="wa_message_count" widget="statinfo" string="WhatsApp"/>
+                </button>
+            </xpath>
+            <field name="phone" position="after">
+                <field name="wa_phone" groups="wa_cloud_connector.group_wa_user"
+                       invisible="not wa_phone" readonly="1"/>
+            </field>
+        </field>
+    </record>
+</odoo>

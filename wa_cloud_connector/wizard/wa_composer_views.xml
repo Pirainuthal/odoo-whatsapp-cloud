@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2026 Pirainuthal S - License LGPL-3 -->
+<odoo>
+    <record id="wa_composer_view_form" model="ir.ui.view">
+        <field name="name">wa.composer.form</field>
+        <field name="model">wa.composer</field>
+        <field name="arch" type="xml">
+            <form string="Send WhatsApp">
+                <field name="res_model" invisible="1"/>
+                <field name="res_id" invisible="1"/>
+                <field name="in_service_window" invisible="1"/>
+                <div class="alert alert-warning" role="alert"
+                     invisible="mode != 'text' or in_service_window">
+                    <b>Outside the 24-hour customer service window.</b>
+                    WhatsApp only delivers free-text messages within 24 hours of the
+                    customer's last message. Use an approved template to start a new
+                    conversation.
+                </div>
+                <group>
+                    <group>
+                        <field name="partner_id"/>
+                        <field name="phone" placeholder="+91 98765 43210" required="1"/>
+                        <field name="account_id" options="{'no_create': True}" required="1"/>
+                    </group>
+                    <group>
+                        <field name="mode" widget="radio" options="{'horizontal': true}"/>
+                        <field name="last_inbound_date" string="Customer last wrote"
+                               invisible="not last_inbound_date"/>
+                        <field name="attach_report"/>
+                        <field name="report_id" invisible="not attach_report"
+                               required="attach_report" options="{'no_create': True}"/>
+                    </group>
+                </group>
+                <group invisible="mode != 'template'">
+                    <field name="template_id" required="mode == 'template'"
+                           options="{'no_create': True}"/>
+                </group>
+                <field name="variable_ids" invisible="mode != 'template' or not variable_ids">
+                    <list editable="bottom" create="false" delete="false">
+                        <field name="position" string="Placeholder" force_save="1"/>
+                        <field name="value"/>
+                    </list>
+                </field>
+                <group invisible="mode != 'text'">
+                    <field name="body" required="mode == 'text' and not attach_report"
+                           placeholder="Type your message..."/>
+                </group>
+                <group invisible="mode != 'template' or not template_id">
+                    <field name="preview" string="Preview"/>
+                </group>
+                <footer>
+                    <button name="action_send" type="object" string="Send" class="btn-primary"
+                            data-hotkey="q"/>
+                    <button string="Discard" special="cancel" data-hotkey="x"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>
