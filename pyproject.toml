@@ -1,0 +1,29 @@
+# Tooling configuration only - the Odoo module itself is installed through the addons path.
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+extend-exclude = [".venv"]
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle
+    "W",
+    "F",   # pyflakes
+    "I",   # isort
+    "B",   # bugbear
+    "UP",  # pyupgrade
+    "SIM", # simplify
+    "C4",  # comprehensions
+    "RUF",
+]
+ignore = [
+    "RUF012", # Odoo class attributes (_inherit lists, ...) are not ClassVar-annotated
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["odoo"]
+section-order = ["future", "standard-library", "third-party", "first-party", "local-folder"]
+
+[tool.ruff.lint.per-file-ignores]
+"*/__manifest__.py" = ["B018"]
+"*/__init__.py" = ["F401"]
